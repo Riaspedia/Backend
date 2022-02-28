@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -35,5 +36,6 @@ Route::group([
     'prefix' => 'auth'
 
 ], function ($router) {
-    Route::get('/profile', [AuthController::class, 'userProfile']);
+    Route::get('/profile', [ProfileController::class, 'userProfile']);
+    Route::put('/profile', [ProfileController::class, 'update']);
 });
