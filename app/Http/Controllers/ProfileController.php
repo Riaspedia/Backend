@@ -16,7 +16,7 @@ class ProfileController extends Controller
         $user = $this->getAuthUser();
         $user = $user->find($request->id);
 
-        if (!empty($service)) {
+        if (!empty($user)) {
             $user->name = is_null($request->name) ? $user->name : $request->name;
             $user->gender = is_null($request->gender) ? $user->gender : $request->gender;
             $user->city = is_null($request->city) ? $user->city : $request->city;
