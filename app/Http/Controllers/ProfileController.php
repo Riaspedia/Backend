@@ -14,6 +14,8 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         $user = $this->getAuthUser();
+        $user = $user->find($request->id);
+
         if (!empty($service)) {
             $user->name = is_null($request->name) ? $user->name : $request->name;
             $user->gender = is_null($request->gender) ? $user->gender : $request->gender;
