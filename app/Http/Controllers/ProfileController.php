@@ -34,6 +34,36 @@ class ProfileController extends Controller
 
     }
 
+    public function updateImage(Request $request) {
+        $user = $this->getAuthUser();
+        $user = $user->find(3);
+
+        $request->validate([
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1028'
+        ]);
+
+        if(!empty($user)) {
+            $photo = $request->file('image');
+            $path = 'public/images';
+            $string = rand(22, 5033);
+            if($photo != null) {
+                $filename = $string . '__photo.' . $photo->getClientOriginalExtension();
+                
+                $img = $photo->storeAs($path, $filename);
+                $user->image = $path . $filename;
+            }
+            $user->save;
+
+            return response()->json([
+                "message" => $photo
+            ], 201);
+        } else {
+            return response()->json([
+                "message" => "update profile failed"
+            ], 400);
+        }
+    }
+
     private function getAuthUser()
     {
         try{
