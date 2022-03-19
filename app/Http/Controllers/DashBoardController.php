@@ -9,7 +9,7 @@ class DashBoardController extends Controller
 {
 
     public function listVendor() {
-        $list = Vendor::all()->take(10) ;
+        $list = Vendor::all()->take(10);
 
         return response()->json([
             "list" => $list
