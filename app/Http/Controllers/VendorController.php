@@ -17,14 +17,17 @@ class VendorController extends Controller
             "phone" => "required",
         ]);
 
-        $vendor = Vendor::create([
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
-        ]);
+        $vendor = new Vendor;
+        $vendor->name = $request->name;
+        $vendor->phone =  $request->phone;
+        $vendor->description = $request->description;
+        $vendor->email = $request->email;
+        $vendor->address = $request->address;
+        $vendor->city = $request->city;
+        $vendor->latitude = $request->latitude;
+        $vendor->longitude = $request->longitude;
 
-        $vendor->user()->attach($user);
+        $vendor->user()->associate($user)->save();
 
         return response()->json([
             "message" => "create vendor successfully"
@@ -39,6 +42,10 @@ class VendorController extends Controller
         if (!empty($vendor)) {
             $vendor->name = is_null($request->name) ? $vendor->name : $request->name;
             $vendor->phone = is_null($request->phone) ? $vendor->phone : $request->phone;
+            $vendor->description = is_null($request->description) ? $vendor->description : $request->description;
+            $vendor->email = is_null($request->email) ? $vendor->email : $request->email;
+            $vendor->address = is_null($request->address) ? $vendor->address : $request->address;
+            $vendor->city = is_null($request->city) ? $vendor->city : $request->city;
             $vendor->latitude = is_null($request->latitude) ? $vendor->latitude : $request->latitude;
             $vendor->longitude = is_null($request->longitude) ? $vendor->longitude : $request->longitude;
             $vendor->save();

@@ -17,20 +17,38 @@ class HourController extends Controller
             "close" => "required",
         ]);
 
-        $hour = Hour::create([
-            'open' => $request->open,
-            'close' => $request->close,
-        ]);
+        $hour = new Hour;
+        $hour->open = $request->open;
+        $hour->close = $request->close;
 
-        $day = Day::find($request->day);
+        $day = Day::find($request->day_id);
+        $hour->day()->associate($day);
+        $hour->vendor()->associate($vendor);
+        $hour->save();
 
-        $hour->day()->attach($day);
-        $hour->vendor()->attach($vendor);
-
+        return response()->json([
+            "message" => "create hour successfully"
+        ], 201);
     }
 
     public function update(Request $request)
     {
+        $vendor = $this->authVendor();
+        $hour = $vendor->hours()->find($request->id)->get();
+
+        if (!empty($hour)) {
+            $hour->open = is_null($request->open) ? $hour->open : $request->open;
+            $hour->close =is_null($request->close) ? $hour->close : $request->close;
+            $hour->save();
+
+            return response()->json([
+                "message" => "hour updated successfully"
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "hour not found"
+            ], 404);
+        }
 
     }
 
@@ -42,7 +60,7 @@ class HourController extends Controller
     private function authVendor()
     {
         $user = $this->getAuthUser();
-        $vendor = $user->vendor()->get();
+        $vendor = $user->vendor;
 
         if(!empty($vendor)) {
             return $vendor;

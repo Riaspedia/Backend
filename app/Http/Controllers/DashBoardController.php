@@ -7,9 +7,24 @@ use Illuminate\Http\Request;
 
 class DashBoardController extends Controller
 {
+    public function detailVendor($id) {
+        $vendor = Vendor::find($id);
+        $hour = $vendor->hours()->get();
+        foreach ($hour as $themp){
+            $day[] = [
+                "open"=> $themp->open,
+                "close"=> $themp->close,
+                "day"=> $themp->day()->get('name')];
+        }
+
+        return response()->json([
+            "vendor" => $vendor,
+            "day and hour" => $day,
+        ], 201);
+    }
 
     public function listVendor() {
-        $list = Vendor::all()->take(10);
+        $list = Vendor::all()->take(5);
 
         return response()->json([
             "list" => $list

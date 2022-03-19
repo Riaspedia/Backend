@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\DashBoardController;
+use App\Http\Controllers\HourController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OutletController;
+use App\Http\Controllers\VendorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -32,16 +35,25 @@ Route::group([
     Route::post('/refresh', [AuthController::class, 'refresh']);
 });
 
-Route::get('/outlet', [OutletController::class, 'index']);
-Route::get('/outlet/{id}', [OutletController::class, 'show']);
+Route::get('/outlet', [DashBoardController::class, 'listVendor']);
+Route::get('/outlet/{id}', [DashBoardController::class, 'detailVendor']);
 
 Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
 
 ], function ($router) {
-    Route::post('/addOutlet', [OutletController::class, 'store']);
+    Route::post('/addOutlet', [VendorController::class, 'store']);
     Route::post('/updateOutlet/{id}', [OutletController::class, 'update']);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'vendor'
+
+], function ($router) {
+    Route::post('/addHour', [HourController::class, 'store']);
+    Route::post('/updateHour/{id}', [HourController::class, 'update']);
 });
 
 Route::group([

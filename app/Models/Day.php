@@ -20,6 +20,6 @@ class Day extends Model
 
     public function hours()
     {
-        return $this->hasMany(Hour::class);
+        return $this->hasMany('App\Models\Hour');
     }
 }

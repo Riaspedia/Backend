@@ -17,7 +17,7 @@ class CreateOutletTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
-            $table->int('price');
+            $table->String('price');
             $table->string('address');
             $table->timestamps();
         });
