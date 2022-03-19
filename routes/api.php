@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\OutletController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -31,6 +32,18 @@ Route::group([
     Route::post('/refresh', [AuthController::class, 'refresh']);
 });
 
+Route::get('/outlet', [OutletController::class, 'index']);
+Route::get('/outlet/{id}', [OutletController::class, 'show']);
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth'
+
+], function ($router) {
+    Route::post('/addOutlet', [OutletController::class, 'store']);
+    Route::post('/updateOutlet/{id}', [OutletController::class, 'update']);
+});
+
 Route::group([
     'middleware' => ['api', 'jwtVerify'],
     'prefix' => 'auth'
@@ -38,4 +51,5 @@ Route::group([
 ], function ($router) {
     Route::get('/profile', [ProfileController::class, 'userProfile']);
     Route::put('/profile', [ProfileController::class, 'update']);
+    Route::put('/profile/updateImage', [ProfileController::class, 'updateImage']);
 });
