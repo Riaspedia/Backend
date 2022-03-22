@@ -37,7 +37,7 @@ class Vendor extends Model
 
     public function services()
     {
-        return $this->hasMany(Service::class);
+        return $this->hasMany('App\Models\Service');
     }
 
     public function galleries()

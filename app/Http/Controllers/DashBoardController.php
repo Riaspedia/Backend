@@ -10,6 +10,7 @@ class DashBoardController extends Controller
     public function detailVendor($id) {
         $vendor = Vendor::find($id);
         $hour = $vendor->hours()->get();
+        $services = $vendor->services()->get();
         foreach ($hour as $themp){
             $day[] = [
                 "open"=> $themp->open,
@@ -20,6 +21,7 @@ class DashBoardController extends Controller
         return response()->json([
             "vendor" => $vendor,
             "day and hour" => $day,
+            "Service" => $services,
         ], 201);
     }
 
