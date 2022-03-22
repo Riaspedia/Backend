@@ -16,12 +16,10 @@ class ServiceController extends Controller
             "price" => ['required', 'regex:^(?:[1-9]\d+|\d)(?:\,\d\d)?$'],
         ]);
 
-        $service = Service::create([
-            'name' => $request->name,
-            'price' => $request->price,
-        ]);
-
-        $service->vendor()->attach($vendor);
+        $service = new Service;
+        $service->name = $request->name;
+        $service->price = $request->price;
+        $service->vendor()->associate($vendor)->save();
 
         return response()->json([
             "message" => "Service create successfully"
@@ -70,7 +68,7 @@ class ServiceController extends Controller
     private function authVendor()
     {
         $user = $this->getAuthUser();
-        $vendor = $user->vendor()->get();
+        $vendor = $user->vendor;
 
         if(!empty($vendor)) {
             return $vendor;
