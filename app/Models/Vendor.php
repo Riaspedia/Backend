@@ -23,6 +23,7 @@ class Vendor extends Model
         'city',
         'latitude',
         'longitude',
+        'category',
     ];
 
     public function user()
