@@ -21,7 +21,7 @@ class Hour extends Model
 
     public function vendor()
     {
-        return $this->belongsTo('App\Models\Vendor');
+        return $this->belongsTo(Vendor::class);
     }
 
     public function day()

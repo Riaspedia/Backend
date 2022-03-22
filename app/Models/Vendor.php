@@ -47,6 +47,6 @@ class Vendor extends Model
 
     public function hours()
     {
-        return $this->hasMany('App\Models\Hour');
+        return $this->hasMany(Hour::class);
     }
 }

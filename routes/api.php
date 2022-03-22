@@ -35,8 +35,8 @@ Route::group([
     Route::post('/refresh', [AuthController::class, 'refresh']);
 });
 
-Route::get('/outlet', [DashBoardController::class, 'listVendor']);
-Route::get('/outlet/{id}', [DashBoardController::class, 'detailVendor']);
+Route::get('/vendor', [VendorController::class, 'index']);
+Route::get('/vendor/{id}', [VendorController::class, 'show']);
 
 Route::group([
     'middleware' => 'api',

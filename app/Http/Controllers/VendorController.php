@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Vendor;
+use App\Models\Day;
 use Illuminate\Support\Facades\Validator;
 
 class VendorController extends Controller
@@ -75,6 +76,38 @@ class VendorController extends Controller
                 "message" => "vendor not found"
             ], 404);
         }
+    }
+
+    public function index ()
+    {
+        setlocale(LC_ALL, 'IND');
+        $currentDay = date('l');
+        $vendor = Vendor::find(1)->with('hours')->get();
+        $day_id = Day::where('name', $currentDay)->first();
+        
+
+        return response()->json([
+            "data" => $vendor,
+            "day" => $day_id
+        ], 201);
+    }
+
+    public function show (Request $request, $id)
+    {
+        setlocale(LC_ALL, 'IND');
+        $currentDay = date('l');
+        $vendor = Vendor::where('id', $id)->with(['hours' => function($q) {
+            $q->orderBy('day_id');
+        }])->first();
+        $day_id = Day::where('name', $currentDay)->first();
+        $days = Day::all();
+        
+
+        return response()->json([
+            "data" => $vendor,
+            "current_day" => $day_id,
+            "days" => $days
+        ], 201);
     }
 
     private function getAuthUser()
