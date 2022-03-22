@@ -26,6 +26,7 @@ class VendorController extends Controller
         $vendor->city = $request->city;
         $vendor->latitude = $request->latitude;
         $vendor->longitude = $request->longitude;
+        $vendor->category = $request->category;
 
         $vendor->user()->associate($user)->save();
 
@@ -48,6 +49,7 @@ class VendorController extends Controller
             $vendor->city = is_null($request->city) ? $vendor->city : $request->city;
             $vendor->latitude = is_null($request->latitude) ? $vendor->latitude : $request->latitude;
             $vendor->longitude = is_null($request->longitude) ? $vendor->longitude : $request->longitude;
+            $vendor->category = is_null($request->category) ? $vendor->category : $request->category;
             $vendor->save();
 
             return response()->json([
