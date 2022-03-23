@@ -17,11 +17,15 @@ class CreateVendorsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone');
-            $table->unsignedBigInteger('user_id');
+            $table->longText('description');
+            $table->string('address');
+            $table->string('email');
+            $table->string('city');
+            $table->string('category');
             $table->string("latitude")->nullable();
             $table->string("longitude")->nullable();
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('user_id')->constrained('users');
         });
     }
 

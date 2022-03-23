@@ -17,13 +17,18 @@ class Vendor extends Model
     protected $fillable = [
         'name',
         'phone',
+        'description',
+        'address',
+        'email',
+        'city',
         'latitude',
         'longitude',
+        'category',
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo('App\Models\User');
     }
 
     public function reviews()
@@ -33,7 +38,7 @@ class Vendor extends Model
 
     public function services()
     {
-        return $this->hasMany(Service::class);
+        return $this->hasMany('App\Models\Service');
     }
 
     public function galleries()
@@ -43,6 +48,6 @@ class Vendor extends Model
 
     public function hours()
     {
-        return $this->hasMany(Hour::class);
+        return $this->hasMany('App\Models\Hour');
     }
 }
