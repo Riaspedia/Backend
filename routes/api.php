@@ -4,6 +4,7 @@ use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\HourController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OutletController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\VendorController;
 use Illuminate\Http\Request;
@@ -56,6 +57,7 @@ Route::group([
     Route::post('/addHour', [HourController::class, 'store']);
     Route::post('/updateHour/{id}', [HourController::class, 'update']);
     Route::post('/addService', [ServiceController::class, 'store']);
+    Route::post('/addReview', [ReviewController::class, 'store']);
 });
 
 Route::group([
