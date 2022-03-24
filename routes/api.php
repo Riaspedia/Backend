@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\HourController;
 use App\Http\Controllers\ProfileController;
@@ -35,6 +36,15 @@ Route::group([
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'auth/admin'
+
+], function ($router) {
+    Route::post('/login', [AdminController::class, 'login']);
+    Route::post('/logout', [AdminController::class, 'logout']);
 });
 
 Route::get('/outlet', [DashBoardController::class, 'listVendor']);
