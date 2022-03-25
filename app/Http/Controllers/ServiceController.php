@@ -13,12 +13,16 @@ class ServiceController extends Controller
 
         $request->validate([
             "name" => "required",
-            "price" => ['required', 'regex:^(?:[1-9]\d+|\d)(?:\,\d\d)?$'],
+            "price" => "required",
+            "duration" => "required",
+            "category" => "required"
         ]);
 
         $service = new Service;
         $service->name = $request->name;
         $service->price = $request->price;
+        $service->duration = $request->duration;
+        $service->category = $request->category;
         $service->vendor()->associate($vendor)->save();
 
         return response()->json([
@@ -34,6 +38,8 @@ class ServiceController extends Controller
         if (!empty($service)) {
             $service->name = is_null($request->name) ? $service->name : $request->name;
             $service->price = is_null($request->price) ? $service->price : $request->price;
+            $service->duration = is_null($request->duration) ? $service->duration : $request->duration;
+            $service->category = is_null($request->category) ? $service->category : $request->category;
             $service->save();
 
             return response()->json([
@@ -63,6 +69,15 @@ class ServiceController extends Controller
             ], 404);
         }
 
+    }
+
+    public function show(Request $request) {
+        $vendor = $this->authVendor();
+        $service = Service::where('vendor_id', $vendor->id)->get();
+
+        return response()->json([
+            "data" => $service
+        ], 201);
     }
 
     private function authVendor()

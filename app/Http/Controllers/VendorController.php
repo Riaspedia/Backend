@@ -98,7 +98,7 @@ class VendorController extends Controller
     {
         setlocale(LC_ALL, 'IND');
         $currentDay = date('l');
-        $vendor = Vendor::where('id', $id)->with(['hours' => function($q) {
+        $vendor = Vendor::where('id', $id)->with('services')->with('reviews')->with(['hours' => function($q) {
             $q->orderBy('day_id');
         }])->first();
         $day_id = Day::where('name', $currentDay)->first();

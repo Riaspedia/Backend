@@ -17,6 +17,8 @@ class CreateServicesTable extends Migration
             $table->id();
             $table->string('name');
             $table->decimal('price', 10, 2);
+            $table->integer('duration');
+            $table->string('category');
             $table->unsignedBigInteger('vendor_id');
             $table->timestamps();
             $table->foreign('vendor_id')->references('id')->on('vendors');

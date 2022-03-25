@@ -57,6 +57,7 @@ Route::group([
     Route::post('/addHour', [HourController::class, 'store']);
     Route::post('/updateHour/{id}', [HourController::class, 'update']);
     Route::post('/addService', [ServiceController::class, 'store']);
+    Route::get('/service/{vendorId}', [ServiceController::class, 'show']);
     Route::post('/addReview', [ReviewController::class, 'store']);
 });
 
