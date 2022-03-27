@@ -17,7 +17,7 @@ class CreateVendorsTable extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone');
-            $table->longText('description');
+            $table->longText('description')->nullable();
             $table->string('address');
             $table->string('email');
             $table->string('city');

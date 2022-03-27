@@ -36,10 +36,10 @@ class VendorController extends Controller
         ], 201);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $user = $this->getAuthUser();
-        $vendor = $user->vendor()->get();
+        $vendor = Vendor::where('id', $id)->first();
 
         if (!empty($vendor)) {
             $vendor->name = is_null($request->name) ? $vendor->name : $request->name;
@@ -84,7 +84,7 @@ class VendorController extends Controller
     {
         setlocale(LC_ALL, 'IND');
         $currentDay = date('l');
-        $vendor = Vendor::find(1)->with('hours')->get();
+        $vendor = Vendor::with('hours')->get();
         $day_id = Day::where('name', $currentDay)->first();
         
 
@@ -98,7 +98,7 @@ class VendorController extends Controller
     {
         setlocale(LC_ALL, 'IND');
         $currentDay = date('l');
-        $vendor = Vendor::where('id', $id)->with('services')->with('reviews')->with(['hours' => function($q) {
+        $vendor = Vendor::where('user_id', $id)->with('services')->with('reviews')->with(['hours' => function($q) {
             $q->orderBy('day_id');
         }])->first();
         $day_id = Day::where('name', $currentDay)->first();

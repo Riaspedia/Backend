@@ -17,6 +17,8 @@ class Hour extends Model
     protected $fillable = [
         'open',
         'close',
+        'vendor_id',
+        'day_id'
     ];
 
     public function vendor()

@@ -45,8 +45,8 @@ Route::group([
     'prefix' => 'auth'
 
 ], function ($router) {
-    Route::post('/addOutlet', [VendorController::class, 'store']);
-    Route::post('/updateOutlet/{id}', [OutletController::class, 'update']);
+    Route::post('/addVendor', [VendorController::class, 'store']);
+    Route::post('/updateVendor/{id}', [VendorController::class, 'update']);
 });
 
 Route::group([

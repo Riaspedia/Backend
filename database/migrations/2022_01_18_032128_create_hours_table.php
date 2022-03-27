@@ -15,8 +15,8 @@ class CreateHoursTable extends Migration
     {
         Schema::create('hours', function (Blueprint $table) {
             $table->id();
-            $table->string('open');
-            $table->string('close');
+            $table->string('open')->nullable();
+            $table->string('close')->nullable();
             $table->timestamps();
             $table->foreignId('day_id')->constrained('days');
             $table->foreignId('vendor_id')->constrained('vendors');

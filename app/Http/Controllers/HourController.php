@@ -31,16 +31,15 @@ class HourController extends Controller
         ], 201);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $vendor = $this->authVendor();
-        $hour = $vendor->hours()->find($request->id)->get();
+        $hour = Hour::updateOrCreate(
+            ['vendor_id' => $id, 'day_id' => $request->day_id],
+            ['open' => $request->open, 'close' => $request->close]
+        );
 
-        if (!empty($hour)) {
-            $hour->open = is_null($request->open) ? $hour->open : $request->open;
-            $hour->close =is_null($request->close) ? $hour->close : $request->close;
-            $hour->save();
-
+        if ($hour) {
             return response()->json([
                 "message" => "hour updated successfully"
             ], 200);
