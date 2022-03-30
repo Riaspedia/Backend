@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashBoardController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HourController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OutletController;
@@ -68,6 +69,7 @@ Route::group([
     Route::post('/updateHour/{id}', [HourController::class, 'update']);
     Route::post('/addService', [ServiceController::class, 'store']);
     Route::post('/addReview', [ReviewController::class, 'store']);
+    Route::post('/addImage', [GalleryController::class, 'store']);
 });
 
 Route::group([
