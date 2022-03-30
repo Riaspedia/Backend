@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gallery;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -48,7 +49,7 @@ class ProfileController extends Controller
             $string = rand(22, 5033);
             if($photo != null) {
                 $filename = $string . '__photo.' . $photo->getClientOriginalExtension();
-                
+
                 $img = $photo->storeAs($path, $filename);
                 $user->image = $path . $filename;
             }
@@ -62,6 +63,25 @@ class ProfileController extends Controller
                 "message" => "update profile failed"
             ], 400);
         }
+    }
+
+    public function uploadProfile(Request $request)
+    {
+        $user = $this->getAuthUser();
+        $image  = $request->file('image');
+        $userPath = 'profile_'.$user->name;
+
+        if($user->image != null){
+            $result = CloudinaryStorage::replace($user->image, $image->getRealPath(), $userPath);
+        }else {
+            $result = CloudinaryStorage::upload($image->getRealPath(), $userPath);
+        }
+        $user->image = $result;
+        $user->save();
+
+        return response()->json([
+            "message" => "upload profile successfully"
+        ], 201);
     }
 
     private function getAuthUser()

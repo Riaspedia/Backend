@@ -21,9 +21,10 @@ class GalleryController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, Image $image)
+    public function update(Request $request)
     {
         $file   = $request->file('image');
+        $image = Gallery::all()->find($request->imageId);
         $result = CloudinaryStorage::replace($image->image, $file->getRealPath(), $file->getClientOriginalName());
         $image->update(['image' => $result]);
         return response()->json([
@@ -31,12 +32,13 @@ class GalleryController extends Controller
         ], 201);
     }
 
-    public function destroy(Image $image)
+    public function destroy(Request $request)
     {
+        $image = Gallery::all()->find($request->imageId);
         CloudinaryStorage::delete($image->image);
         $image->delete();
         return response()->json([
-            "message" => "image delate successfully"
+            "message" => "image delete successfully"
         ], 201);
     }
 
