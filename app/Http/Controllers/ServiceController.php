@@ -30,10 +30,10 @@ class ServiceController extends Controller
         ], 201);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $vendor = $this->authVendor();
-        $service = $vendor->services()->find($request->id);
+        $service = Service::where('id', $id)->first();
 
         if (!empty($service)) {
             $service->name = is_null($request->name) ? $service->name : $request->name;
@@ -71,9 +71,18 @@ class ServiceController extends Controller
 
     }
 
-    public function show(Request $request) {
+    public function index() {
         $vendor = $this->authVendor();
         $service = Service::where('vendor_id', $vendor->id)->get();
+
+        return response()->json([
+            "data" => $service
+        ], 201);
+    }
+
+    public function show(Request $request, $id) {
+        $vendor = $this->authVendor();
+        $service = Service::where('id', $id)->first();
 
         return response()->json([
             "data" => $service
