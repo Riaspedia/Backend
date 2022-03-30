@@ -67,9 +67,12 @@ Route::group([
     Route::post('/addHour', [HourController::class, 'store']);
     Route::post('/updateHour/{id}', [HourController::class, 'update']);
     Route::post('/addService', [ServiceController::class, 'store']);
-    Route::get('/service/{vendorId}', [ServiceController::class, 'show']);
+    Route::post('/updateService/{id}', [ServiceController::class, 'update']);
     Route::post('/addReview', [ReviewController::class, 'store']);
 });
+
+Route::get('/services', [ServiceController::class, 'index']);
+Route::get('/service/{id}', [ServiceController::class, 'show']);
 
 Route::group([
     'middleware' => ['api', 'jwtVerify'],

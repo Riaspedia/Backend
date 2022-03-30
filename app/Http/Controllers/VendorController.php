@@ -32,7 +32,8 @@ class VendorController extends Controller
         $vendor->user()->associate($user)->save();
 
         return response()->json([
-            "message" => "create vendor successfully"
+            "message" => "create vendor successfully",
+            "data" => $vendor->id
         ], 201);
     }
 
@@ -98,7 +99,7 @@ class VendorController extends Controller
     {
         setlocale(LC_ALL, 'IND');
         $currentDay = date('l');
-        $vendor = Vendor::where('user_id', $id)->with('services')->with('reviews', 'reviews.user')->with(['hours' => function($q) {
+        $vendor = Vendor::where('id', $id)->with('services')->with('reviews', 'reviews.user')->with(['hours' => function($q) {
             $q->orderBy('day_id');
         }])->first();
         $day_id = Day::where('name', $currentDay)->first();
