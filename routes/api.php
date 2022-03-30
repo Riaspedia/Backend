@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DashBoardController;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HourController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OutletController;
@@ -69,6 +70,9 @@ Route::group([
     Route::post('/addService', [ServiceController::class, 'store']);
     Route::get('/service/{vendorId}', [ServiceController::class, 'show']);
     Route::post('/addReview', [ReviewController::class, 'store']);
+    Route::post('/addImage', [GalleryController::class, 'store']);
+    Route::post('/updateImage', [GalleryController::class, 'update']);
+    Route::post('/deleteImage', [GalleryController::class, 'update']);
 });
 
 Route::group([
@@ -79,4 +83,5 @@ Route::group([
     Route::get('/profile', [ProfileController::class, 'userProfile']);
     Route::put('/profile', [ProfileController::class, 'update']);
     Route::put('/profile/updateImage', [ProfileController::class, 'updateImage']);
+    Route::post('/profile/uploadImage', [ProfileController::class, 'uploadProfile']);
 });

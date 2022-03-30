@@ -12,6 +12,7 @@ class DashBoardController extends Controller
         $hour = $vendor->hours()->get();
         $services = $vendor->services()->get();
         $reviews = $vendor->reviews()->get();
+        $gallery = $vendor->galleries()->get();
         foreach ($hour as $themp){
             $day[] = [
                 "open"=> $themp->open,
@@ -24,6 +25,7 @@ class DashBoardController extends Controller
             "day and hour" => $day,
             "Service" => $services,
             "reviews" => $reviews,
+            "gallery" => $gallery,
         ], 201);
     }
 
