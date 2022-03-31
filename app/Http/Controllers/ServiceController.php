@@ -52,13 +52,12 @@ class ServiceController extends Controller
         }
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request, $id)
     {
         $vendor = $this->authVendor();
-        $service = $vendor->services()->find($request->id);
+        $service = Service::where('id', $id)->first();
 
         if (!empty($service)) {
-            $service->vendor()->detach();
             $service->delete();
             return response()->json([
                 "message" => "service deleted"

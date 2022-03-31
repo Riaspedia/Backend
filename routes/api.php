@@ -69,6 +69,7 @@ Route::group([
     Route::post('/updateHour/{id}', [HourController::class, 'update']);
     Route::post('/addService', [ServiceController::class, 'store']);
     Route::post('/updateService/{id}', [ServiceController::class, 'update']);
+    Route::get('/deleteService/{id}', [ServiceController::class, 'destroy']);
     Route::post('/addReview', [ReviewController::class, 'store']);
     Route::post('/addImage', [GalleryController::class, 'store']);
     Route::post('/updateImage', [GalleryController::class, 'update']);
