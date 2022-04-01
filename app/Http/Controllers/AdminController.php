@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Vendor;
 use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
@@ -28,8 +29,8 @@ class AdminController extends Controller
 
         $user = auth()->userOrFail();;
         $vendor = $user->vendor;
-        if(!empty($vendor)){
-            return $this->createNewToken($token, $vendor);
+        if(!empty($user)){
+            return $this->createNewToken($token, $user);
         } else {
             response()->json([
                 'message' => 'Not authenticated'
@@ -44,13 +45,19 @@ class AdminController extends Controller
         return response()->json(['message' => 'User successfully signed out']);
     }
 
-    protected function createNewToken($token, $vendor){
+    protected function createNewToken($token, $user){
+        $vendor = Vendor::where('user_id', Auth()->user()->id)->first();
+        $id = "";
+        if($vendor) {
+            $id = $vendor->id;
+        }
+
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => Auth()->factory()->getTTL() * 60,
             'user_id' => Auth()->user()->id,
-            'vendor_id' => $vendor->id,
+            'vendor_id' => $id,
         ]);
     }
 }
