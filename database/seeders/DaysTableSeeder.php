@@ -16,37 +16,37 @@ class DaysTableSeeder extends Seeder
     {
         $days = [
             [
-                'name' => "Monday",
+                'name' => "Senin",
                 'created_at' => new \DateTime,
                 'updated_at' => null,
             ],
             [
-                'name' => "Tuesday",
+                'name' => "Selasa",
                 'created_at' => new \DateTime,
                 'updated_at' => null,
             ],
             [
-                'name' => "Wednesday",
+                'name' => "Rabu",
                 'created_at' => new \DateTime,
                 'updated_at' => null,
             ],
             [
-                'name' => "Thursday",
+                'name' => "Kamis",
                 'created_at' => new \DateTime,
                 'updated_at' => null,
             ],
             [
-                'name' => "Friday",
+                'name' => "Jumat",
                 'created_at' => new \DateTime,
                 'updated_at' => null,
             ],
             [
-                'name' => "Saturday",
+                'name' => "Sabtu",
                 'created_at' => new \DateTime,
                 'updated_at' => null,
             ],
             [
-                'name' => "Sunday",
+                'name' => "Minggu",
                 'created_at' => new \DateTime,
                 'updated_at' => null,
             ],
