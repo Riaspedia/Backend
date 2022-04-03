@@ -104,12 +104,14 @@ class VendorController extends Controller
         }])->first();
         $day_id = Day::where('name', $currentDay)->first();
         $days = Day::all();
+        $gallery = $vendor->galleries()->get();
 
 
         return response()->json([
             "data" => $vendor,
             "current_day" => $day_id,
-            "days" => $days
+            "days" => $days,
+            "gallery" => $gallery
         ], 201);
     }
 
