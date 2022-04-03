@@ -87,7 +87,7 @@ class VendorController extends Controller
         $currentDay = date('l');
         $vendor = Vendor::with('hours')->get();
         $day_id = Day::where('name', $currentDay)->first();
-        
+
 
         return response()->json([
             "data" => $vendor,
@@ -104,12 +104,32 @@ class VendorController extends Controller
         }])->first();
         $day_id = Day::where('name', $currentDay)->first();
         $days = Day::all();
-        
+
 
         return response()->json([
             "data" => $vendor,
             "current_day" => $day_id,
             "days" => $days
+        ], 201);
+    }
+
+    public function uploadProfile(Request $request)
+    {
+        $user = $this->getAuthUser();
+        $vendor = $user->vendor()->get();
+        $image  = $request->file('image');
+        $path = 'profile_'.$vendor->name;
+
+        if($vendor->image != null){
+            $result = CloudinaryStorage::replace($vendor->image, $image->getRealPath(), $path);
+        }else {
+            $result = CloudinaryStorage::upload($image->getRealPath(), $path);
+        }
+        $vendor->image = $result;
+        $vendor->save();
+
+        return response()->json([
+            "message" => "upload profile successfully"
         ], 201);
     }
 
