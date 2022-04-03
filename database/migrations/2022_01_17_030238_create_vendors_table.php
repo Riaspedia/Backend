@@ -22,6 +22,7 @@ class CreateVendorsTable extends Migration
             $table->string('email');
             $table->string('city');
             $table->string('category');
+            $table->string("image")->nullable();
             $table->string("latitude")->nullable();
             $table->string("longitude")->nullable();
             $table->timestamps();
