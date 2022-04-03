@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Vendor;
 use App\Models\Day;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class VendorController extends Controller
 {
@@ -37,10 +38,45 @@ class VendorController extends Controller
         ], 201);
     }
 
+    public function uploadProfile(Request $request, $id)
+    {
+        // bemana lagi caraya maprint diphp kulupai wkwk print_r
+        // testes.. masih adakah?masihh... iniytanyaki nnti bagian backendnya
+        // buat kurang lebih kek gini.. masalahnya kutambah id disitu untuk requestnya nah errorki
+        // tapi kalau normalmi backendnya bisami tampikan gambar.. ini tadi kupake cara manual kasih masuk
+        // id vendornya jadi itumi bisa tampil gambarnya..
+        // difronednya yg mana lagi? yang upload banyak
+        // yang halaman navbarnya dimana itu? belumpi taganti profilenya
+        $user = $this->getAuthUser();
+        $request->validate([
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1028'
+        ]);
+        $image  = $request->file('image');
+        $userPath = 'profile_'.$user->name;
+        $vendor = Vendor::where('id', $id)->first();
+
+
+        if($user->image != null || $vendor->image != null){
+            $result = CloudinaryStorage::replace($user->image, $image->getRealPath(), $userPath);
+        }else {
+            $result = CloudinaryStorage::upload($image->getRealPath(), $userPath);
+        }
+        $vendor->image = $result;
+        $vendor->save();
+        $user->image = $result;
+        $user->save();
+
+//mana codenya pas create vndor? mau saya lihat caranya taryuh idnya.. di frontend?
+        return response()->json([
+            "message" => "upload profile successfully"
+        ], 201);
+    } //kutaruh disini dlu d iyasemnr sementara ka di routes apinya diarahkan ke controller nya vendor
+
     public function update(Request $request, $id)
     {
         $user = $this->getAuthUser();
         $vendor = Vendor::where('id', $id)->first();
+        
 
         if (!empty($vendor)) {
             $vendor->name = is_null($request->name) ? $vendor->name : $request->name;
@@ -63,7 +99,7 @@ class VendorController extends Controller
             ], 404);
         }
     }
-
+//halaman yg mana adminnya? ini servernya belum dideploy atau masih local?masih local, controller untuk upload image admin dimana?
     public function destroy (Request $request)
     {
         $user = $this->getAuthUser();
@@ -84,10 +120,10 @@ class VendorController extends Controller
     public function index ()
     {
         setlocale(LC_ALL, 'IND');
-        $currentDay = date('l');
+        $currentDay = Carbon::now()->isoFormat('dddd');
         $vendor = Vendor::with('hours')->get();
         $day_id = Day::where('name', $currentDay)->first();
-
+        
 
         return response()->json([
             "data" => $vendor,
@@ -98,40 +134,18 @@ class VendorController extends Controller
     public function show (Request $request, $id)
     {
         setlocale(LC_ALL, 'IND');
-        $currentDay = date('l');
+        $currentDay = Carbon::now()->isoFormat('dddd');
         $vendor = Vendor::where('id', $id)->with('services')->with('reviews', 'reviews.user')->with(['hours' => function($q) {
             $q->orderBy('day_id');
         }])->first();
         $day_id = Day::where('name', $currentDay)->first();
         $days = Day::all();
-        $gallery = $vendor->galleries()->get();
-
+        
 
         return response()->json([
             "data" => $vendor,
             "current_day" => $day_id,
-            "days" => $days,
-            "gallery" => $gallery
-        ], 201);
-    }
-
-    public function uploadProfile(Request $request)
-    {
-        $user = $this->getAuthUser();
-        $vendor = $user->vendor()->get();
-        $image  = $request->file('image');
-        $path = 'profile_'.$vendor->name;
-
-        if($vendor->image != null){
-            $result = CloudinaryStorage::replace($vendor->image, $image->getRealPath(), $path);
-        }else {
-            $result = CloudinaryStorage::upload($image->getRealPath(), $path);
-        }
-        $vendor->image = $result;
-        $vendor->save();
-
-        return response()->json([
-            "message" => "upload profile successfully"
+            "days" => $days
         ], 201);
     }
 
