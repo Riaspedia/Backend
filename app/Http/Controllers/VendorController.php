@@ -38,45 +38,35 @@ class VendorController extends Controller
         ], 201);
     }
 
-    public function uploadProfile(Request $request, $id)
+    public function uploadProfile(Request $request)
     {
-        // bemana lagi caraya maprint diphp kulupai wkwk print_r
-        // testes.. masih adakah?masihh... iniytanyaki nnti bagian backendnya
-        // buat kurang lebih kek gini.. masalahnya kutambah id disitu untuk requestnya nah errorki
-        // tapi kalau normalmi backendnya bisami tampikan gambar.. ini tadi kupake cara manual kasih masuk
-        // id vendornya jadi itumi bisa tampil gambarnya..
-        // difronednya yg mana lagi? yang upload banyak
-        // yang halaman navbarnya dimana itu? belumpi taganti profilenya
         $user = $this->getAuthUser();
         $request->validate([
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:1028'
         ]);
         $image  = $request->file('image');
-        $userPath = 'profile_'.$user->name;
-        $vendor = Vendor::where('id', $id)->first();
+        $vendor = $user->vendor;
+        $userPath = 'profile_'.$vendor->name;
 
-
-        if($user->image != null || $vendor->image != null){
-            $result = CloudinaryStorage::replace($user->image, $image->getRealPath(), $userPath);
+        if($vendor->image != null){
+            $result = CloudinaryStorage::replace($vendor->image, $image->getRealPath(), $userPath);
         }else {
             $result = CloudinaryStorage::upload($image->getRealPath(), $userPath);
         }
         $vendor->image = $result;
         $vendor->save();
-        $user->image = $result;
-        $user->save();
 
-//mana codenya pas create vndor? mau saya lihat caranya taryuh idnya.. di frontend?
+
         return response()->json([
             "message" => "upload profile successfully"
         ], 201);
-    } //kutaruh disini dlu d iyasemnr sementara ka di routes apinya diarahkan ke controller nya vendor
+    }
 
     public function update(Request $request, $id)
     {
         $user = $this->getAuthUser();
         $vendor = Vendor::where('id', $id)->first();
-        
+
 
         if (!empty($vendor)) {
             $vendor->name = is_null($request->name) ? $vendor->name : $request->name;
@@ -123,7 +113,7 @@ class VendorController extends Controller
         $currentDay = Carbon::now()->isoFormat('dddd');
         $vendor = Vendor::with('hours')->get();
         $day_id = Day::where('name', $currentDay)->first();
-        
+
 
         return response()->json([
             "data" => $vendor,
@@ -140,7 +130,7 @@ class VendorController extends Controller
         }])->first();
         $day_id = Day::where('name', $currentDay)->first();
         $days = Day::all();
-        
+
 
         return response()->json([
             "data" => $vendor,

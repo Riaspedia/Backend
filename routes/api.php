@@ -74,7 +74,7 @@ Route::group([
     Route::post('/addImage', [GalleryController::class, 'store']);
     Route::post('/updateImage', [GalleryController::class, 'update']);
     Route::post('/deleteImage', [GalleryController::class, 'update']);
-    Route::post('{id}/profile/uploadImage', [VendorController::class, 'uploadProfile']);
+    Route::post('/profile/uploadImage', [VendorController::class, 'uploadProfile']);
 });
 
 Route::get('/services', [ServiceController::class, 'index']);
