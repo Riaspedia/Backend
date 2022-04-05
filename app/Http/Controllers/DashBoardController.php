@@ -29,6 +29,38 @@ class DashBoardController extends Controller
         ], 201);
     }
 
+    public function sort(Request $request) {
+        $vendor = Vendor::all();
+        if($request->city != null){
+            $vendor = $vendor->where('city','LIKE', $request->city)->get();
+        }
+
+        if($request->category != null){
+            $vendor = $vendor->where('category', 'LIKE', $request->category)->get();
+        }
+
+        if($request->name != null){
+            $vendor = $vendor->where('name', 'LIKE', '%'.$request->name. '%')->get();
+
+        }
+
+        return response()->json([
+            "list" => $vendor
+        ], 200);
+    }
+
+    public function sortSecond($search) {
+        $vendor = Vendor::query()
+            ->where('city','LIKE', $search)
+            ->orWhere('category', 'LIKE', $search)
+            ->orWhere('name', 'LIKE', '%'.$search. '%')
+            ->paginate(10);
+
+        return response()->json([
+            "list" => $vendor
+        ], 200);
+    }
+
     public function listVendor() {
         $list = Vendor::all()->take(5);
 
@@ -36,7 +68,6 @@ class DashBoardController extends Controller
             "list" => $list
         ], 200);
     }
-
 
     private function getAuthUser()
     {
