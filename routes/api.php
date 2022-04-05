@@ -50,6 +50,7 @@ Route::group([
 
 Route::get('/vendor', [VendorController::class, 'index']);
 Route::get('/vendor/{id}', [VendorController::class, 'show']);
+Route::get('/vendor/sort', [DashBoardController::class, 'sort']);
 
 Route::group([
     'middleware' => 'api',
