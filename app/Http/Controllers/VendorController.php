@@ -125,7 +125,7 @@ class VendorController extends Controller
     {
         setlocale(LC_ALL, 'IND');
         $currentDay = Carbon::now()->isoFormat('dddd');
-        $vendor = Vendor::where('id', $id)->with('services')->with('reviews', 'reviews.user')->with(['hours' => function($q) {
+        $vendor = Vendor::where('id', $id)->with('services')->with('reviews', 'reviews.user', 'reviews.services')->with(['hours' => function($q) {
             $q->orderBy('day_id');
         }])->first();
         $day_id = Day::where('name', $currentDay)->first();

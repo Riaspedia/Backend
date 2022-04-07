@@ -28,4 +28,9 @@ class Review extends Model
     {
         return $this->belongsTo('App\Models\Vendor');
     }
+
+    public function services()
+    {
+        return $this->belongsToMany('App\Models\Service', 'review_service');
+    }
 }

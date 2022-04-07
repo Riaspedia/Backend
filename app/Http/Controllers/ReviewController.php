@@ -19,12 +19,22 @@ class ReviewController extends Controller
             "score" => "required",
         ]);
 
+        foreach ($request->servicesId as $service){
+            $cekService = Service::find($service);
+            if($cekService == null){
+                return response()->json([
+                    "message" => "service not found"
+                ], 404);
+            }
+        }
+
         $review = new Review;
         $review->description = $request->description;
         $review->score = $request->score;
         $review->user()->associate($user);
         $review->vendor()->associate($vendor);
         $review->save();
+        $review->services()->attach($request->servicesId);
 
         return response()->json([
             "message" => "review create successfully"
